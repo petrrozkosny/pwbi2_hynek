@@ -10,3 +10,16 @@ ADDCOLUMNS(
     "den",DAY([Date]))
 
 
+_________________________________
+
+01 rocni srazky = 
+
+SUMMARIZE(
+    -- tabulka, jejiz sloupce agregujeme
+    data,
+    -- sloupce tabulky data, podle kterych agregujeme
+    data[rok],data[mesic],
+    -- nove pridavane sloupce, ktere agregujeme dle [rok] a [mesic]
+    "mesicni srazky",SUM(data[Srazky]),
+    "maximalni teplota",max(data[Teplota])
+)
