@@ -85,3 +85,27 @@ CALCULATE(
     -- z originalni, tj. zafiltrovane, tabulky za pomoci funkce SELECTEDVALUE()
     data[rok] = SELECTEDVALUE(data[rok])-1)
 )
+
+
+_____________________________________________
+
+14 suma srazek mesic 6 = 
+-- takto ne
+VAR varianta1 = 
+CALCULATE(
+    SUM(data[Srazky]),
+    FILTER(data,data[mesic] = 6))
+-- takto ano, kdyz nemuzu jinak
+VAR varianta2 = 
+CALCULATE(
+    SUM(data[Srazky]),
+    FILTER(
+        ALL(dim_datumy[mesic]),
+        dim_datumy[mesic] = 6))
+-- takto ano, timto zacinam
+VAR varianta3=
+    CALCULATE(
+        SUM(data[Srazky]),
+        dim_datumy[mesic] = 6)
+return
+varianta3
