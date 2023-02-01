@@ -68,7 +68,6 @@ CALCULATE(
     ALL(data))
     
 _________________________________________________________
-
 04 suma srazek predchozi rok = 
 /*
 Potrebujeme "vypnout" filtr nad rokem a nastavit si vlastni filtr
@@ -84,6 +83,5 @@ CALCULATE(
     --krok2: Funkce FILTER() nastavuje filtr na sloupec [rok] tabulky
     -- vracene funkci ALL(), pricemz hodnotu filtru si pocitame
     -- z originalni, tj. zafiltrovane, tabulky za pomoci funkce SELECTEDVALUE()
-    data[rok] = SELECTEDVALUE(data[rok]))
+    data[rok] = SELECTEDVALUE(data[rok])-1)
 )
- 
