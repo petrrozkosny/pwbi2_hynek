@@ -109,3 +109,26 @@ VAR varianta3=
         dim_datumy[mesic] = 6)
 return
 varianta3
+
+
+_______________________________________________
+
+31 maximalni a minimalni rocni srazky = 
+
+VAR tabulka = 
+SUMMARIZE(ALL(data),
+data[rok],"rocni srazky",SUM(data[Srazky]))
+
+VAR minimalni_rocni_srazky = 
+ROUND(
+MINX(tabulka,[rocni srazky]),2)
+
+VAR maximalni_rocni_srazky = 
+round(
+MAXX(tabulka,[rocni srazky]),2)
+
+RETURN
+SWITCH(TRUE(),
+ROUND(
+SUM(data[Srazky]),2) = maximalni_rocni_srazky,"CYAN",
+ROUND(SUM(data[Srazky]),2) = minimalni_rocni_srazky,"GREY")
