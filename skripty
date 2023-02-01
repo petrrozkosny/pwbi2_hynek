@@ -23,3 +23,67 @@ SUMMARIZE(
     "mesicni srazky",SUM(data[Srazky]),
     "maximalni teplota",max(data[Teplota])
 )
+
+
+________________________________________________
+01 suma srazek = 
+/*
+Respektuji filtry vizualu, nepridavam dalsi, tj. pouzivam zakladni agregacni
+funkci, ktera agreguje sloupec tabulky filtrovane vizualem.
+*/
+SUM(data[Srazky])
+
+_______________________________________________
+
+02 suma srazek ruzyne = 
+/*
+Respektuji filtry vizualu a pridavam dalsi filtr, a to na
+sloupec [lokalita] tabulky data
+*/
+CALCULATE(
+    --krok4: Scitame sloupec [Srazky] tabulky vracene funkci FILTER()
+    SUM(data[Srazky]),
+    -- krok3: Funkce FILTER() vraci tabulku
+        FILTER(
+    --krok1: Funkce FILTER() prebira tabulku data filtrovanou
+    -- vizualem.
+    data,
+    --krok2: Funkce FILTER() nastavuje filtr na sloupec [Lokalita]
+    data[Lokalita] = "RUZYNE"))
+    
+ _________________________________________________
+ 
+ 03 suma srazek vsechny roky = 
+/*
+Potrebujeme se zbavit filtru nad sloupcem [Rok]. Vytvarime
+si kopii tabulky data zbavene vsech filtru a tu potom agregujeme.
+*/
+
+CALCULATE(
+    --krok2: Funkce SUM() agreguje sloupec [Srazky] tabulky
+    -- vracene funkci ALL()
+    SUM(data[Srazky]),
+    --krok1: Funkce ALL() vraci kopii tabulky data zbavenou
+    -- vsech filtru
+    ALL(data))
+    
+_________________________________________________________
+
+04 suma srazek predchozi rok = 
+/*
+Potrebujeme "vypnout" filtr nad rokem a nastavit si vlastni filtr
+nad stejnym sloupcem, pricemz hodnotu filtru si dopocitavame dynamicky
+*/
+CALCULATE(
+    --krok4: Funkce SUM() scita sloupec [Srazky] tabulky vracene funkci FILTER()
+    SUM(data[Srazky]),
+    --krok3: Funkce FILTER() vraci tabulku
+    FILTER(
+        --krok1: Funkce ALL() vraci kopii tabulky data zbavenou vsech filtru
+        ALL(data),
+    --krok2: Funkce FILTER() nastavuje filtr na sloupec [rok] tabulky
+    -- vracene funkci ALL(), pricemz hodnotu filtru si pocitame
+    -- z originalni, tj. zafiltrovane, tabulky za pomoci funkce SELECTEDVALUE()
+    data[rok] = SELECTEDVALUE(data[rok]))
+)
+ 
