@@ -1,0 +1,12 @@
+dim_datumy = 
+ADDCOLUMNS(
+    -- funkce CALENDARAUTO() vraci tabulku se sloupcem [Date]
+    CALENDARAUTO(),
+    -- nize pridavame sloupce do tabulky vracene funkci CALENDARAUTO()
+    -- kdy pocitame hodnoty ze sloupce [Date]
+    "rok",YEAR([Date]),
+    "kvartal",QUARTER([Date]),
+    "mesic",MONTH([Date]),
+    "den",DAY([Date]))
+
+
