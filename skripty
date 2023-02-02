@@ -132,3 +132,30 @@ SWITCH(TRUE(),
 ROUND(
 SUM(data[Srazky]),2) = maximalni_rocni_srazky,"CYAN",
 ROUND(SUM(data[Srazky]),2) = minimalni_rocni_srazky,"GREY")
+
+
+
+______________________________________________________________________
+
+38 suma srazek predchozi obdobi = 
+VAR suma_srazek_predchozi_rok = CALCULATE(
+    SUM(data[Srazky]),
+    dim_datumy[rok] = SELECTEDVALUE(dim_datumy[rok]) - 1)
+
+VAR maximalni_rok = CALCULATE(MAX(dim_datumy[rok]),all(dim_datumy[rok]))
+VAR minimalni_rok = CALCULATE(MIN(dim_datumy[rok]),all(dim_datumy[rok]))
+
+VAR suma_srazek_maximalni_rok = 
+    CALCULATE(
+        SUM(data[Srazky]),
+        dim_datumy[rok] = maximalni_rok)
+
+VAR suma_srazek_minimalni_rok = 
+    CALCULATE(
+        SUM(data[Srazky]),
+        dim_datumy[rok] = minimalni_rok)
+RETURN
+SWITCH(TRUE(),
+SELECTEDVALUE(typ_roku[typ_roku]) = "predchozi rok",suma_srazek_predchozi_rok,
+SELECTEDVALUE(typ_roku[typ_roku]) = "maximalni rok",suma_srazek_maximalni_rok,
+suma_srazek_minimalni_rok)
